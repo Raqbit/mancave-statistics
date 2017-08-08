@@ -26,7 +26,6 @@ function gotData(data) {
   const value = data.val();
 
   updateChartConfigs(value);
-  updateRaw(value);
 
   if (initialFetch) {
     charts.forEach((chart) => {
@@ -45,25 +44,31 @@ function errData(err) {
 function initCharts(data) {
   charts.push(new CustomChart('msg_chart', msgConfig, 'msgCount'));
   charts.push(new CustomChart('char_chart', charConfig, 'charCount'));
+  charts.push(new AverageChart('avg_chart', averageConfig, 'charword'));
   charts.push(new WordChart('word_chart', wordConfig, 'wordCount'));
 }
 
 function updateChartConfigs(data) {
   charts.forEach((chart) => {
-    chart.updateChartConfig(data[chart.dataName]);
+    if (data[chart.dataName]) {
+      // Dataname can be used as key in main data object
+      chart.updateChartConfig(data[chart.dataName]);
+    } else {
+      // Custom data, bit hacky
+      if (chart.dataName == 'charword') {
+        chart.updateChartConfig({
+          charCount: data['charCount'],
+          msgCount: data['msgCount']
+        });
+      }
+    }
     chart.updateChart();
-  })
-}
-
-function updateRaw(data) {
-  var html = Prism.highlight(JSON.stringify(data, null, 2), Prism.languages.json);
-  $('#json').empty();
-  $('#json').append(html);
+  });
 }
 
 function showPage() {
-  document.getElementById('loader').style.display = 'none';
-  document.getElementById('mainContainer').style.display = 'block';
+  $('#loader')[0].style.display = 'none';
+  $('#mainContainer')[0].style.display = 'block';
 }
 
 function showSnackbar(content, timeout) {

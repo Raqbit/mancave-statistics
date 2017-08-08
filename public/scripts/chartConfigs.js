@@ -1,4 +1,4 @@
-var msgConfig = {
+const msgConfig = {
     type: 'pie',
     data: {
         datasets: [{
@@ -18,7 +18,7 @@ var msgConfig = {
     }
 };
 
-var charConfig = {
+const charConfig = {
     type: 'pie',
     data: {
         datasets: [{
@@ -38,7 +38,27 @@ var charConfig = {
     }
 };
 
-var wordConfig = {
+const averageConfig = {
+    type: 'pie',
+    data: {
+        datasets: [{
+            data: [],
+            backgroundColor: [],
+        }],
+        labels: []
+    },
+    options: {
+        responsive: true,
+        legend: {
+            display: false
+        },
+        animation: {
+            duration: 0,
+        }
+    }
+};
+
+const wordConfig = {
     type: 'bar',
     data: {
         datasets: [{
@@ -57,3 +77,5 @@ var wordConfig = {
         }
     }
 };
+
+

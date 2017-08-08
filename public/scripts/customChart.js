@@ -1,7 +1,7 @@
 class CustomChart {
 
     constructor(canvasId, config, dataName) {
-        this.ctx = document.getElementById(canvasId).getContext('2d');
+        this.ctx = $('#' + canvasId)[0].getContext('2d');
         this.config = config;
         this.dataName = dataName;
 
@@ -58,4 +58,24 @@ class WordChart extends CustomChart {
         }
     }
 
+}
+
+class AverageChart extends CustomChart {
+
+    updateChartConfig(data) {
+        const msgCount = data['msgCount'];
+        const charCount = data['charCount'];
+
+        const usernames = Object.keys(msgCount);
+
+        let scores = [];
+
+        for (let i = 0; i < usernames.length; i++) {
+            scores[i] = (charCount[usernames[i]] / msgCount[usernames[i]]).toFixed(2);
+            this.config.data.datasets[0].backgroundColor[i] = randomColor({ seed: usernames[i], format: 'rgb' });
+        }
+
+        this.config.data.datasets[0].data = scores;
+        this.config.data.labels = usernames;
+    }
 }
