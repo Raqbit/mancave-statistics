@@ -25,6 +25,7 @@ function initDBListener() {
 function gotData(data) {
   const value = data.val();
 
+  updateGlobalStats(value['global']);
   updateChartConfigs(value);
 
   if (initialFetch) {
@@ -64,6 +65,11 @@ function updateChartConfigs(data) {
     }
     chart.updateChart();
   });
+}
+
+function updateGlobalStats(globalStats) {
+  $('#stat_global_msg')[0].innerHTML = globalStats['msgCount'];
+  $('#stat_global_char')[0].innerHTML = globalStats['charCount'];
 }
 
 function showPage() {

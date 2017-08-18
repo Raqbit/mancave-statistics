@@ -39,7 +39,7 @@ const charConfig = {
 };
 
 const averageConfig = {
-    type: 'pie',
+    type: 'bar',
     data: {
         datasets: [{
             data: [],
@@ -51,6 +51,11 @@ const averageConfig = {
         responsive: true,
         legend: {
             display: false
+        },
+        scales: {
+            xAxes: [{
+                display: false
+            }]
         },
         animation: {
             duration: 0,
@@ -71,6 +76,11 @@ const wordConfig = {
         responsive: true,
         legend: {
             display: false
+        },
+        scales: {
+            xAxes: [{
+                display: false
+            }]
         },
         animation: {
             duration: 0,

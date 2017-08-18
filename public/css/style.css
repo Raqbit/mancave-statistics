@@ -48,3 +48,14 @@
 #mainContainer {
   display: none;
 }
+
+#header_well {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.global_stat {
+  text-align: center; 
+  font-size: 40px;
+  font-weight: bold;
+}
