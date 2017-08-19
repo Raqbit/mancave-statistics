@@ -62,20 +62,35 @@ class WordChart extends CustomChart {
 
 class AverageChart extends CustomChart {
 
-    updateChartConfig(data) {
-        const msgCount = data['msgCount'];
-        const charCount = data['charCount'];
+    updateChartConfig(rawData) {
+        const msgCount = rawData['msgCount'];
+        const charCount = rawData['charCount'];
 
         const usernames = Object.keys(msgCount);
 
-        let scores = [];
+        const scores = {};
 
+        // Calculating the average score based on charcount & msgcount
         for (let i = 0; i < usernames.length; i++) {
-            scores[i] = (charCount[usernames[i]] / msgCount[usernames[i]]).toFixed(2);
+            scores[usernames[i]] = (charCount[usernames[i]] / msgCount[usernames[i]]).toFixed(2);
+        }
+
+        // Sorting the labels
+        usernames.sort((a, b) => {
+            return scores[b] - scores[a];
+        });
+
+        const sortedScores = [];
+
+        // Sorting the scores by using the sorted usernames
+        for (let i = 0; i < usernames.length; i++) {
+            sortedScores[i] = scores[usernames[i]];
+            // Setting the color based on the username
             this.config.data.datasets[0].backgroundColor[i] = randomColor({ seed: usernames[i], format: 'rgb' });
         }
 
-        this.config.data.datasets[0].data = scores;
+        // Setting data & labels
+        this.config.data.datasets[0].data = sortedScores;
         this.config.data.labels = usernames;
     }
 }
