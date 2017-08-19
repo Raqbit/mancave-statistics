@@ -1,19 +1,21 @@
 let charts = [];
 
 let initialFetch = true;
+let showJSON = false;
 
 $(document).ready(() => {
   initCharts();
+  initJSON();
   initDBListener();
 });
 
 function initDBListener() {
   const config = {
-    apiKey: "AIzaSyDpVf8H-MxIqeoChmryghVhagskTMKDzuo",
-    authDomain: "mancave-statistics.firebaseapp.com",
-    databaseURL: "https://mancave-statistics.firebaseio.com",
-    storageBucket: "mancave-statistics.appspot.com",
-    messagingSenderId: "67467871425"
+    apiKey: 'AIzaSyDpVf8H-MxIqeoChmryghVhagskTMKDzuo',
+    authDomain: 'mancave-statistics.firebaseapp.com',
+    databaseURL: 'https://mancave-statistics.firebaseio.com',
+    storageBucket: 'mancave-statistics.appspot.com',
+    messagingSenderId: '67467871425'
   };
 
   firebase.initializeApp(config);
@@ -27,6 +29,15 @@ function gotData(data) {
 
   updateGlobalStats(value['global']);
   updateChartConfigs(value);
+
+  if (showJSON) {
+    updateJSON(
+      {
+        global: value['global'],
+        charCount: value['charCount'],
+        msgCount: value['msgCount']
+      });
+  }
 
   if (initialFetch) {
     charts.forEach((chart) => {
@@ -42,11 +53,27 @@ function errData(err) {
   showSnackbar('An error occurred while fetching the data.', 0);
 }
 
-function initCharts(data) {
+function initCharts() {
   charts.push(new CustomChart('msg_chart', msgConfig, 'msgCount'));
   charts.push(new CustomChart('char_chart', charConfig, 'charCount'));
   charts.push(new AverageChart('avg_chart', averageConfig, 'charword'));
   charts.push(new WordChart('word_chart', wordConfig, 'wordCount'));
+}
+
+function initJSON() {
+  $('#json-toggle-input').change(function () {
+    if (this.checked) {
+      showJSON = true;
+      showSnackbar('Loading JSON...', 2000);
+      $('#json_hidden_txt')[0].style.display = 'none';
+      $('#json_highlight_container')[0].style.display = 'block';
+    } else {
+      showJSON = false;
+      $('#json_hidden_txt')[0].innerHTML = '';
+      $('#json_hidden_txt')[0].style.display = 'block';
+      $('#json_highlight_container')[0].style.display = 'none';
+    }
+  });
 }
 
 function updateChartConfigs(data) {
@@ -65,6 +92,13 @@ function updateChartConfigs(data) {
     }
     chart.updateChart();
   });
+}
+
+function updateJSON(data) {
+  const code = JSON.stringify(data, null, 2);
+  const html = Prism.highlight(code, Prism.languages.json);
+  $('.snackbar').snackbar('hide');
+  $('#json_highlight')[0].innerHTML = html;
 }
 
 function updateGlobalStats(globalStats) {

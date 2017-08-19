@@ -59,3 +59,24 @@
   font-size: 40px;
   font-weight: bold;
 }
+
+#json_header {
+  display: flex;
+  align-items: center;
+}
+
+#json-toggle { 
+  margin-left: auto;
+}
+
+.togglebutton label {
+  color: rgba(0,0,0,0.7);
+}
+
+#json_hidden_txt h1, #json_hidden_txt p {
+  text-align: center;
+}
+
+#json_highlight_container {
+  display: none;
+}
