@@ -30,14 +30,11 @@ function gotData(data) {
   updateGlobalStats(value['global']);
   updateChartConfigs(value);
 
-  if (showJSON) {
-    updateJSON(
-      {
-        global: value['global'],
-        charCount: value['charCount'],
-        msgCount: value['msgCount']
-      });
-  }
+  updateJSON({
+    global: value['global'],
+    charCount: value['charCount'],
+    msgCount: value['msgCount']
+  });
 
   if (initialFetch) {
     charts.forEach((chart) => {
@@ -64,12 +61,10 @@ function initJSON() {
   $('#json-toggle-input').change(function () {
     if (this.checked) {
       showJSON = true;
-      showSnackbar('Loading JSON...', 2000);
       $('#json_hidden_txt')[0].style.display = 'none';
       $('#json_highlight_container')[0].style.display = 'block';
     } else {
       showJSON = false;
-      $('#json_hidden_txt')[0].innerHTML = '';
       $('#json_hidden_txt')[0].style.display = 'block';
       $('#json_highlight_container')[0].style.display = 'none';
     }
@@ -97,7 +92,6 @@ function updateChartConfigs(data) {
 function updateJSON(data) {
   const code = JSON.stringify(data, null, 2);
   const html = Prism.highlight(code, Prism.languages.json);
-  $('.snackbar').snackbar('hide');
   $('#json_highlight')[0].innerHTML = html;
 }
 
